@@ -1,0 +1,23 @@
+# Default ignore files
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+**/.git
+**/.svn
+**/.hg
+
+# To ignore next node type following comment:
+# // prettier-ignore
+
+# Pre-commit hook
+# 1 step:
+# npm install --save-dev husky lint-staged
+# npx husky install
+# npm set-script prepare "husky install"
+# npx husky add .husky/pre-commit "npx lint-staged"
+
+# 2 step:
+# package.json
+# "lint-staged": { "**/*": "prettier --write --ignore-unknown" }
