@@ -6,9 +6,10 @@ module.exports = {
     // Loaders
     module: {
         rules: [
-            {test: /\.svg$/, use: 'svg-inline-loader'},
-            {test: /\.css$/, use: ['style-loader', 'css-loader']},
-            {test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/}
+            {test: /\.svg$/i, use: 'svg-react-loader'},
+            {test: /\.css$/i, use: ['style-loader', 'css-loader']},
+            {test: /\.tsx?$/i, use: 'ts-loader', exclude: /node_modules/},
+            {test: /\.(png|jpg|jpeg|gif)$/i, type: 'asset/resource'}
         ]
     },
     resolve: {
