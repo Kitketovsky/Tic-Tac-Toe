@@ -23,8 +23,9 @@
     "eject": "react-scripts eject",
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server",
-    "dev": "npm run webpack-dev-server -- --env mode=development --hot --open",
-    "prod": "npm run webpack -- --env mode=production"
+    "dev": "webpack serve -- --env mode=development",
+    "prod": "npm run webpack -- --env mode=production",
+    "duplicate": "webpack --profile --json > stats.json && npx webpack-stats-duplicates stats.json"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
     "ts-loader": "^9.3.0",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.9.0"
+    "webpack-dev-server": "^4.9.0",
+    "webpack-stats-duplicates": "^2.1.0"
   }
 }

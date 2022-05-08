@@ -14,6 +14,12 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
+    devServer: {
+        port: 9000,
+        hot: true,
+        open: true,
+        historyApiFallback: true
+    },
     // Info about bundles
     output: {
         path: path.resolve(__dirname, 'dist'),
