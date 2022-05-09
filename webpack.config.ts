@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const config: webpack.Configuration = {
     mode: "development",
-    devtool: "source-map",
+    devtool: "inline-source-map",
     entry: {
         index: "./src/index.tsx",
     },
@@ -28,8 +28,15 @@ const config: webpack.Configuration = {
     module: {
         rules: [
             { test: /\.svg$/i, use: "svg-react-loader" },
-            { test: /\.css$/i, use: ["style-loader", "css-loader"] },
-            { test: /\.tsx?$/i, use: "ts-loader", exclude: /node_modules/ },
+            {
+                test: /\.css$/i,
+                use: [
+                    { loader: "style-loader", options: { sourceMap: true } },
+                    "css-loader",
+                ],
+            },
+            { test: /\.tsx?$/i, use: "babel-loader", exclude: /node_modules/ },
+            { test: /\.js$/i, use: "source-map-loader", enforce: "pre" },
             { test: /\.(png|jpg|jpeg|gif)$/i, type: "asset/resource" },
         ],
     },
