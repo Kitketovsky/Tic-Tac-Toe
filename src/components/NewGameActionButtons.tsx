@@ -12,8 +12,8 @@ const Wrapper = styled.div`
 export const NewGameActionButtons = () => {
     return (
         <Wrapper>
-            <Button color="orange">New game (vs CPU)</Button>
-            <Button color="cyan">New game (vs Player)</Button>
+            <Button color="orange" content="New game (vs CPU)" />
+            <Button color="cyan" content="New game (vs Player)" />
         </Wrapper>
     );
 };

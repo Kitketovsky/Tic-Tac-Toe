@@ -4,6 +4,7 @@ import { colors } from "../UI/colors";
 import { BlackO, BlackX } from "../assets/svg";
 import { MARK_O, MARK_X } from "../constants/marks";
 import { IMarks } from "../types/marks";
+import { Button } from "./Button";
 
 const Wrapper = styled.div`
     display: flex;
@@ -38,20 +39,12 @@ interface IPickMarkButtons {
 }
 
 const PickMarkButtons = styled.div<IPickMarkButtons>`
-    background-color: ${colors.darkTheme.black};
-    padding: 0.3rem;
-    border-radius: 10px;
     display: flex;
-    width: 100%;
     position: relative;
-
-    button {
-        width: 100%;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    border-radius: 10px;
+    background-color: ${colors.darkTheme.black};
 
     svg {
         z-index: 2;
@@ -75,35 +68,40 @@ const PickMarkButtons = styled.div<IPickMarkButtons>`
 
     &::after {
         content: "";
-        pointer-events: none;
         position: absolute;
         display: block;
+        pointer-events: none;
+        width: calc(50% - 0.7rem);
         background-color: ${colors.darkTheme.grey};
-        top: 10px;
-        left: 10px;
-        bottom: 10px;
-        width: calc(50% - 10px);
+        top: 0.5rem;
+        left: 0.7rem;
+        bottom: 0.5rem;
         border-radius: 10px;
         transition: transform 0.3s ease-in-out;
         transform: ${({ mark }) =>
             mark === MARK_X ? "translateX(0%)" : "translateX(100%)"};
+        z-index: 1;
     }
 `;
 
 export const NewGameOptions = () => {
+    // TODO: заменить на Redux Toolkit
     const [mark, setMark] = useState<IMarks>(MARK_X);
 
     return (
         <Wrapper>
             <span>Pick player 1's mark</span>
             <PickMarkButtons mark={mark}>
-                {/*TODO: extend Button component*/}
-                <button onClick={() => setMark(MARK_X)}>
-                    <BlackX />
-                </button>
-                <button onClick={() => setMark(MARK_O)}>
-                    <BlackO />
-                </button>
+                <Button
+                    color={"transparent"}
+                    onClick={() => setMark(MARK_X)}
+                    content={<BlackX />}
+                />
+                <Button
+                    color={"transparent"}
+                    onClick={() => setMark(MARK_O)}
+                    content={<BlackO />}
+                />
             </PickMarkButtons>
             <span>Remember: X goes first</span>
         </Wrapper>

@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../UI/colors";
 
-type ButtonColorProps = "orange" | "cyan";
+type ButtonColorProps = "orange" | "cyan" | "transparent";
 
 interface WrapperProps {
     color: ButtonColorProps;
@@ -10,38 +10,54 @@ interface WrapperProps {
 
 const getColor = (
     prefix: "dark" | "light" | "shadow",
-    color: ButtonColorProps
+    color: Exclude<ButtonColorProps, "transparent">
 ) => {
     const [firstLetter, ...otherLetters] = color;
     const colorName = `${prefix}${
-        (firstLetter.toUpperCase() +
-            otherLetters.join("")) as Capitalize<ButtonColorProps>
+        (firstLetter.toUpperCase() + otherLetters.join("")) as Capitalize<
+            Exclude<ButtonColorProps, "transparent">
+        >
     }` as const;
 
     return colors.darkTheme[colorName];
 };
 
 const Wrapper = styled.button<WrapperProps>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 15px;
     text-transform: uppercase;
     padding: 1rem;
     font-size: 1.25rem;
     width: 100%;
-    background-color: ${({ color }) => getColor("dark", color)};
+    background-color: ${({ color }) =>
+        color === "transparent" ? color : getColor("dark", color)};
     font-weight: bold;
     letter-spacing: 1px;
-    border-bottom: ${({ color }) => `6px solid ${getColor("shadow", color)}`};
+    border-bottom: ${({ color }) =>
+        color === "transparent"
+            ? "none"
+            : `6px solid ${getColor("shadow", color)}`};
+    transition: background-color 0.2s ease-in-out;
 
     &:hover {
-        background-color: ${({ color }) => getColor("light", color)};
+        background-color: ${({ color }) =>
+            color === "transparent"
+                ? colors.darkTheme.markButtonHover
+                : getColor("light", color)};
     }
 `;
 
-interface Props {
-    children: React.ReactNode;
+interface Props extends HTMLAttributes<HTMLButtonElement> {
+    content: string | React.ReactNode;
     color: ButtonColorProps;
 }
 
-export const Button: FC<Props> = ({ children, color }) => {
-    return <Wrapper color={color}>{children}</Wrapper>;
+export const Button: FC<Props> = ({ children, color, content, ...props }) => {
+    return (
+        <Wrapper color={color} {...props}>
+            {content}
+        </Wrapper>
+    );
 };

@@ -11,6 +11,7 @@ export const colors = {
         shadowOrange: "#CC8B13",
         shadowCyan: "#118C87",
         shadowBlue: "#10212A",
+        markButtonHover: "rgba(168, 191, 201, 0.05)",
     },
     lightTheme: {},
 };
