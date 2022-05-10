@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { colors } from "../UI/colors";
 import { BlackO, BlackX } from "../assets/svg";
+import { MARK_O, MARK_X } from "../constants/marks";
+import { IMarks } from "../types/marks";
 
 const Wrapper = styled.div`
     display: flex;
@@ -32,7 +34,7 @@ const Wrapper = styled.div`
 `;
 
 interface IPickMarkButtons {
-    mark: "X" | "O";
+    mark: IMarks;
 }
 
 const PickMarkButtons = styled.div<IPickMarkButtons>`
@@ -63,12 +65,12 @@ const PickMarkButtons = styled.div<IPickMarkButtons>`
 
     button:nth-child(1) svg path {
         fill: ${({ mark }) =>
-            mark === "X" ? colors.darkTheme.black : colors.darkTheme.grey};
+            mark === MARK_X ? colors.darkTheme.black : colors.darkTheme.grey};
     }
 
     button:nth-child(2) svg path {
         fill: ${({ mark }) =>
-            mark === "O" ? colors.darkTheme.black : colors.darkTheme.grey};
+            mark === MARK_O ? colors.darkTheme.black : colors.darkTheme.grey};
     }
 
     &::after {
@@ -84,21 +86,22 @@ const PickMarkButtons = styled.div<IPickMarkButtons>`
         border-radius: 10px;
         transition: transform 0.3s ease-in-out;
         transform: ${({ mark }) =>
-            mark === "X" ? "translateX(0%)" : "translateX(100%)"};
+            mark === MARK_X ? "translateX(0%)" : "translateX(100%)"};
     }
 `;
 
 export const NewGameOptions = () => {
-    const [mark, setMark] = useState<"X" | "O">("X");
+    const [mark, setMark] = useState<IMarks>(MARK_X);
 
     return (
         <Wrapper>
             <span>Pick player 1's mark</span>
             <PickMarkButtons mark={mark}>
-                <button onClick={() => setMark("X")}>
+                {/*TODO: extend Button component*/}
+                <button onClick={() => setMark(MARK_X)}>
                     <BlackX />
                 </button>
-                <button onClick={() => setMark("O")}>
+                <button onClick={() => setMark(MARK_O)}>
                     <BlackO />
                 </button>
             </PickMarkButtons>
