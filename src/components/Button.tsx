@@ -31,7 +31,6 @@ const Wrapper = styled.button<WrapperProps>`
     font-weight: bold;
     letter-spacing: 1px;
     border-bottom: ${({ color }) => `6px solid ${getColor("shadow", color)}`};
-    cursor: pointer;
 
     &:hover {
         background-color: ${({ color }) => getColor("light", color)};

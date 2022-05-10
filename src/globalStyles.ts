@@ -16,6 +16,7 @@ export const GlobalStyles = createGlobalStyle`
     background: transparent;
     border: none;
     font: inherit;
+    cursor: pointer;
   }
   
   svg {

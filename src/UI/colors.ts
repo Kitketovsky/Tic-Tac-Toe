@@ -10,6 +10,7 @@ export const colors = {
         white: "#DBE8ED",
         shadowOrange: "#CC8B13",
         shadowCyan: "#118C87",
+        shadowBlue: "#10212A",
     },
     lightTheme: {},
 };
