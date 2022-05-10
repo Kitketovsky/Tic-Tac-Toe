@@ -1,15 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import { GlobalStyles } from "./globalStyles";
+import { MainMenu } from "./pages/MainMenu";
+import { colors } from "./UI/colors";
+import { ContentWrapper } from "./components/ContentWrapper";
 
-const Button = styled.div`
-    background-color: red;
+const AppWrapper = styled.div`
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${colors.darkTheme.black};
 `;
 
 function App() {
     return (
-        <div className="App">
-            <Button>Yeah</Button>
-        </div>
+        <React.Fragment>
+            <GlobalStyles />
+            <AppWrapper>
+                <ContentWrapper>
+                    <MainMenu />
+                </ContentWrapper>
+            </AppWrapper>
+        </React.Fragment>
     );
 }
 

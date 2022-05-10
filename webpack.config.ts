@@ -3,6 +3,7 @@ import * as webpackDevServer from "webpack-dev-server";
 
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const postcssNormalize = require("postcss-normalize");
 
 const config: webpack.Configuration = {
     mode: "development",
@@ -33,6 +34,13 @@ const config: webpack.Configuration = {
                 use: [
                     { loader: "style-loader", options: { sourceMap: true } },
                     "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            ident: "postcss",
+                            plugins: () => [postcssNormalize],
+                        },
+                    },
                 ],
             },
             { test: /\.tsx?$/i, use: "babel-loader", exclude: /node_modules/ },

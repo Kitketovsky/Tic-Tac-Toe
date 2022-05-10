@@ -9,12 +9,4 @@ module.exports = {
     bracketSameLine: false,
     arrowParens: "always",
     singleAttributePerLine: false,
-    overrides: [
-        {
-            files: ".prettierrc.json",
-            options: {
-                parser: "json",
-            },
-        },
-    ],
 };
