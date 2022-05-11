@@ -9,13 +9,17 @@ import {
     startNewGame,
 } from "../../../../redux/reducers/gameSlice";
 import { OPPONENT_CPU, OPPONENT_HUMAN } from "../../../../constants/opponent";
+import { useNavigate } from "react-router";
+import { ROUTES } from "../../../../routes/routes";
 
 export const MenuActions = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const startNewGameHandler = (opponent: IOpponentTypes) => {
         dispatch(setOpponent({ opponent }));
         dispatch(startNewGame());
+        navigate(ROUTES.GAME);
     };
 
     return (
