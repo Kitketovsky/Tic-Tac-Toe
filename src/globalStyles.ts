@@ -4,6 +4,7 @@ export const GlobalStyles = createGlobalStyle`
   html {
     font-family: Outfit, sans-serif;
     font-size: 16px;
+    letter-spacing: 1px;
   }
 
   * {

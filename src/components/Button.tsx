@@ -4,12 +4,14 @@ import { colors } from "../UI/colors";
 
 type ButtonColorProps = "orange" | "cyan" | "transparent";
 
+type ColorPrefixes = "dark" | "light" | "shadow";
+
 interface WrapperProps {
     color: ButtonColorProps;
 }
 
 const getColor = (
-    prefix: "dark" | "light" | "shadow",
+    prefix: ColorPrefixes,
     color: Exclude<ButtonColorProps, "transparent">
 ) => {
     const [firstLetter, ...otherLetters] = color;
@@ -34,7 +36,6 @@ const Wrapper = styled.button<WrapperProps>`
     background-color: ${({ color }) =>
         color === "transparent" ? color : getColor("dark", color)};
     font-weight: bold;
-    letter-spacing: 1px;
     border-bottom: ${({ color }) =>
         color === "transparent"
             ? "none"
