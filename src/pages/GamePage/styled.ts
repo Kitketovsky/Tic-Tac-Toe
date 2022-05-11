@@ -31,12 +31,3 @@ export const Turn = styled.div`
         width: 1.5rem;
     }
 `;
-
-export const ThreeColumnGrid = styled.div`
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    width: 100%;
-    justify-items: center;
-`;
