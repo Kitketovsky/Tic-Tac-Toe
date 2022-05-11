@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { colors } from "../../../UI/colors";
+import { IMarks } from "../../../types/marks";
+import { useAppSelector } from "../../../redux/hooks/useAppSelector";
 
 interface ButtonProps {}
 
@@ -15,8 +17,12 @@ const Button = styled.button`
     border-bottom: 8px solid ${colors.darkTheme.shadowBlue}; //8px or 6px
 `;
 
-interface Props {}
+interface Props {
+    mark: IMarks | null;
+}
 
-export const Cell: FC<Props> = ({}) => {
-    return <Button>X</Button>;
+export const Cell: FC<Props> = ({ mark }) => {
+    const myMark = useAppSelector((state) => state.game.me.mark);
+
+    return <Button>{mark}</Button>;
 };
