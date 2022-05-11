@@ -2,22 +2,23 @@ import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../UI/colors";
 
-type ButtonColorProps = "orange" | "cyan" | "transparent";
+type ButtonColorProps = "orange" | "cyan" | "grey" | "transparent";
 
 type ColorPrefixes = "dark" | "light" | "shadow";
 
 interface WrapperProps {
     color: ButtonColorProps;
+    disabled: boolean;
 }
 
 const getColor = (
     prefix: ColorPrefixes,
-    color: Exclude<ButtonColorProps, "transparent">
+    color: Exclude<ButtonColorProps, "transparent" | "grey">
 ) => {
     const [firstLetter, ...otherLetters] = color;
     const colorName = `${prefix}${
         (firstLetter.toUpperCase() + otherLetters.join("")) as Capitalize<
-            Exclude<ButtonColorProps, "transparent">
+            Exclude<ButtonColorProps, "transparent" | "grey">
         >
     }` as const;
 
@@ -34,18 +35,23 @@ const Wrapper = styled.button<WrapperProps>`
     font-size: 1.25rem;
     width: 100%;
     background-color: ${({ color }) =>
-        color === "transparent" ? color : getColor("dark", color)};
+        color === "transparent" || color === "grey"
+            ? color
+            : getColor("dark", color)};
     font-weight: bold;
     border-bottom: ${({ color }) =>
-        color === "transparent"
+        color === "transparent" || color === "grey"
             ? "none"
             : `6px solid ${getColor("shadow", color)}`};
     transition: background-color 0.2s ease-in-out;
+    cursor: ${({ disabled }) => disabled && "not-allowed"};
 
     &:hover {
         background-color: ${({ color }) =>
             color === "transparent"
                 ? colors.darkTheme.markButtonHover
+                : color === "grey"
+                ? color
                 : getColor("light", color)};
     }
 `;
@@ -53,11 +59,18 @@ const Wrapper = styled.button<WrapperProps>`
 interface Props extends HTMLAttributes<HTMLButtonElement> {
     content: string | React.ReactNode;
     color: ButtonColorProps;
+    disabled?: boolean;
 }
 
-export const Button: FC<Props> = ({ children, color, content, ...props }) => {
+export const Button: FC<Props> = ({
+    children,
+    color,
+    content,
+    disabled = false,
+    ...props
+}) => {
     return (
-        <Wrapper color={color} {...props}>
+        <Wrapper color={color} disabled={disabled} {...props}>
             {content}
         </Wrapper>
     );

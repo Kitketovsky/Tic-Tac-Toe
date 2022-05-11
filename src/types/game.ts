@@ -1,8 +1,10 @@
 import { IMarks } from "./marks";
+import { IOpponentTypes } from "./opponent";
 
 export interface IPlayerInfo {
-    mark: IMarks | null;
+    mark: IMarks;
     wins: number;
+    type?: IOpponentTypes | null;
 }
 
 export type IGameBoard = [IGameBoardRow, IGameBoardRow, IGameBoardRow];
@@ -15,4 +17,6 @@ export interface IGameSliceState {
     gameboard: IGameBoard;
     turn: IMarks | null;
     draws: number;
+    isStarted: boolean;
+    isEnded: boolean;
 }
