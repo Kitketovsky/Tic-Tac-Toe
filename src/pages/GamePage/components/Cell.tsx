@@ -2,11 +2,14 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { colors } from "../../../UI/colors";
 import { IMarks } from "../../../types/marks";
-import { useAppSelector } from "../../../redux/hooks/useAppSelector";
+import { MARK_O, MARK_X } from "../../../constants/marks";
+import { O, X } from "../../../assets/svg";
 
-interface ButtonProps {}
+interface ButtonProps {
+    mark: IMarks | null;
+}
 
-const Button = styled.button`
+const Button = styled.button<ButtonProps>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,15 +17,30 @@ const Button = styled.button`
     aspect-ratio: 1 / 1;
     background-color: ${colors.darkTheme.darkBlue};
     border-radius: 15px;
-    border-bottom: 8px solid ${colors.darkTheme.shadowBlue}; //8px or 6px
+    border-bottom: ${({ mark }) =>
+        `${mark ? "6px" : "10px"} solid ${colors.darkTheme.shadowBlue}`};
 `;
 
 interface Props {
+    id: string;
     mark: IMarks | null;
+    myMark: IMarks;
+    turn: IMarks;
 }
 
-export const Cell: FC<Props> = ({ mark }) => {
-    const myMark = useAppSelector((state) => state.game.me.mark);
+export const Cell: FC<Props> = ({ id, mark, myMark, turn }) => {
+    const [row, cell] = id.split("-");
 
-    return <Button>{mark}</Button>;
+    const isDisabled = turn !== myMark;
+
+    const onCellClickHandler = () => {
+        console.table({ row, cell, myMark });
+    };
+
+    return (
+        <Button mark={mark} onClick={onCellClickHandler} disabled={isDisabled}>
+            {mark === MARK_X && <X />}
+            {mark === MARK_O && <O />}
+        </Button>
+    );
 };
