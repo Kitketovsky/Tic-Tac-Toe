@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { colors } from "../UI/colors";
-import { BlackO, BlackX } from "../assets/svg";
-import { MARK_O, MARK_X } from "../constants/marks";
-import { IMarks } from "../types/marks";
-import { Button } from "./Button";
+import { colors } from "../../../UI/colors";
+import { BlackO, BlackX } from "../../../assets/svg";
+import { MARK_O, MARK_X } from "../../../constants/marks";
+import { IMarks } from "../../../types/marks";
+import { Button } from "../../../components/Button";
 
 const Wrapper = styled.div`
     display: flex;
@@ -84,7 +84,7 @@ const PickMarkButtons = styled.div<IPickMarkButtons>`
     }
 `;
 
-export const NewGameOptions = () => {
+export const MenuOptions = () => {
     // TODO: заменить на Redux Toolkit
     const [mark, setMark] = useState<IMarks>(MARK_X);
 

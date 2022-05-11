@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { colors } from "../UI/colors";
+import { colors } from "../../../UI/colors";
 
 interface ButtonProps {}
 

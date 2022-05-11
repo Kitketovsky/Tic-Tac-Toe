@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "./Button";
+import { Button } from "../../../components/Button";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     width: 100%;
 `;
 
-export const NewGameActionButtons = () => {
+export const MenuActions = () => {
     return (
         <Wrapper>
             <Button color="orange" content="New game (vs CPU)" />
