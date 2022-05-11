@@ -17,17 +17,7 @@ export const GamePage = () => {
                 </Turn>
                 <Button color="orange" content={<RestartIcon />} />
             </Header>
-            <GridTable>
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-                <Cell />
-            </GridTable>
+            <GridTable>{/*<Cell />*/}</GridTable>
             <GridTable>
                 <GameInfo title="O (You)" value={0} color="darkOrange" />
                 <GameInfo title="Ties" value={0} color="grey" />
