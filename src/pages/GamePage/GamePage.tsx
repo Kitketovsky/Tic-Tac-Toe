@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Logo } from "../../components/Logo";
 import { GrayO, GrayX, RestartIcon } from "../../assets/svg";
 import { Button } from "../../components/Button";
 import { Header, Turn } from "./styled";
-import { Cell } from "./components/Cell";
-import { GameInfo } from "./components/GameInfo";
+import { Cell } from "./components/Cell/Cell";
+import { GameInfo } from "./components/GameInfo/GameInfo";
 import { GridTable } from "../../UI/components/GridTable";
 import { useAppSelector } from "../../redux/hooks/useAppSelector";
 import { MARK_X } from "../../constants/marks";
+import { makesRandomizeTurn } from "../../ai/randomizedAI";
+import { useAppDispatch } from "../../redux/hooks/useAppDispatch";
+import { changeTurn, setCellValue } from "../../redux/reducers/gameSlice";
 
 export const GamePage = () => {
-    const { gameboard, turn } = useAppSelector((state) => state.game);
+    const dispatch = useAppDispatch();
+
+    const { gameboard, turn, freeCells } = useAppSelector(
+        (state) => state.game
+    );
 
     const { mark: myMark, wins: myWins } = useAppSelector(
         (state) => state.game.me
@@ -18,6 +25,17 @@ export const GamePage = () => {
     const { mark: opponentMark, wins: opponentWins } = useAppSelector(
         (state) => state.game.opponent
     );
+
+    useEffect(() => {
+        if (!freeCells.length) return;
+
+        if (turn === opponentMark) {
+            const { rowIndex, cellIndex } = makesRandomizeTurn(freeCells);
+
+            dispatch(setCellValue({ cellIndex, rowIndex, mark: opponentMark }));
+            dispatch(changeTurn());
+        }
+    }, [turn]);
 
     return (
         <React.Fragment>

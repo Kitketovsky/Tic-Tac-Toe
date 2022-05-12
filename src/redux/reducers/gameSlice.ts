@@ -15,14 +15,15 @@ const initialState: IGameSliceState = {
         type: null,
     },
     gameboard: [
-        [MARK_O, null, null],
-        [null, MARK_X, null],
+        [null, null, null],
+        [null, null, null],
         [null, null, null],
     ],
     turn: MARK_X,
     draws: 0,
     isStarted: false,
     isEnded: false,
+    freeCells: ["0-0", "0-1", "0-2", "1-0", "1-1", "1-2", "2-0", "2-1", "2-2"],
 };
 
 export const gameSlice = createSlice({
@@ -43,7 +44,32 @@ export const gameSlice = createSlice({
         startNewGame(state) {
             state.isStarted = true;
         },
+        changeTurn(state) {
+            state.turn = state.turn === MARK_X ? MARK_O : MARK_X;
+        },
+        setCellValue(
+            state,
+            action: PayloadAction<{
+                mark: IMarks;
+                rowIndex: string;
+                cellIndex: string;
+            }>
+        ) {
+            const { mark, rowIndex, cellIndex } = action.payload;
+
+            state.gameboard[Number(rowIndex)][Number(cellIndex)] = mark;
+
+            state.freeCells = state.freeCells.filter(
+                (cell) => cell !== `${rowIndex}-${cellIndex}`
+            );
+        },
     },
 });
 
-export const { setPlayersMarks, setOpponent, startNewGame } = gameSlice.actions;
+export const {
+    setPlayersMarks,
+    setOpponent,
+    startNewGame,
+    changeTurn,
+    setCellValue,
+} = gameSlice.actions;

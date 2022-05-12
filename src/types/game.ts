@@ -19,4 +19,7 @@ export interface IGameSliceState {
     draws: number;
     isStarted: boolean;
     isEnded: boolean;
+    freeCells: string[];
 }
+
+export type GameInfoColors = "darkOrange" | "darkCyan" | "grey";
