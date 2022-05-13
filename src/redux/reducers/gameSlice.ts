@@ -3,6 +3,7 @@ import { IGameSliceState } from "../../types/game";
 import { MARK_O, MARK_X } from "../../constants/marks";
 import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
+import { checkGameboardFunctions } from "../../utils";
 
 const initialState: IGameSliceState = {
     me: {
@@ -64,74 +65,12 @@ export const gameSlice = createSlice({
                 (cell) => cell !== `${rowIndex}-${cellIndex}`
             );
         },
-        checkRows(state) {
-            if (state.winner) return;
-
-            for (let row of state.gameboard) {
-                const uniqueRowValues = new Set(row);
-                if (uniqueRowValues.size === 1 && row.every(Boolean)) {
-                    state.winner = Array.from(uniqueRowValues)[0];
-                }
-            }
-        },
-        checkColumns(state) {
-            if (state.winner) return;
-
-            for (let i = 0; i < state.gameboard.length; i++) {
-                const columnValues = [];
-
-                for (let j = 0; j < state.gameboard.length; j++) {
-                    if (!state.gameboard[j][i]) break;
-                    columnValues.push(state.gameboard[j][i]);
-                }
-
-                const uniqueColumnValues = new Set(columnValues);
-
-                if (
-                    columnValues.length === 3 &&
-                    uniqueColumnValues.size === 1
-                ) {
-                    state.winner = Array.from(uniqueColumnValues)[0] as IMarks;
-                }
-            }
-        },
-        checkFirstDiagonal(state) {
-            if (state.winner) return;
-
-            const diagonalResults = [];
-
-            for (let i = 0; i < state.gameboard.length; i++) {
-                if (!state.gameboard[i][i]) break;
-                diagonalResults.push(state.gameboard[i][i]);
-            }
-
-            const uniqueDiagonalResults = new Set(diagonalResults);
-
-            if (
-                diagonalResults.length === 3 &&
-                uniqueDiagonalResults.size === 1
-            ) {
-                state.winner = Array.from(uniqueDiagonalResults)[0] as IMarks;
-            }
-        },
-        checkSecondDiagonal(state) {
-            if (state.winner) return;
-
-            const results = [];
-
-            for (let i = state.gameboard.length - 1; i >= 0; i--) {
-                const cellIndex = Math.abs(i - (state.gameboard.length - 1));
-
-                if (!state.gameboard[i][cellIndex]) break;
-
-                results.push(state.gameboard[i][cellIndex]);
-            }
-
-            const unique = new Set(results);
-
-            if (results.length === 3 && unique.size === 1) {
-                state.winner = Array.from(unique)[0] as IMarks;
-            }
+        checkWinner(state) {
+            if (state.winner || state.freeCells.length > 5) return;
+            checkGameboardFunctions.forEach((checkFn) => {
+                const winner = checkFn(state.gameboard);
+                if (winner) state.winner = winner;
+            });
         },
     },
 });
@@ -142,8 +81,5 @@ export const {
     startNewGame,
     changeTurn,
     setCellValue,
-    checkRows,
-    checkColumns,
-    checkFirstDiagonal,
-    checkSecondDiagonal,
+    checkWinner,
 } = gameSlice.actions;

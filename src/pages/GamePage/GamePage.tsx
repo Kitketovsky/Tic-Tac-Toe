@@ -12,11 +12,8 @@ import { makesRandomizeTurn } from "../../ai/randomizedAI";
 import { useAppDispatch } from "../../redux/hooks/useAppDispatch";
 import {
     changeTurn,
-    checkColumns,
-    checkFirstDiagonal,
-    checkRows,
-    checkSecondDiagonal,
     setCellValue,
+    checkWinner,
 } from "../../redux/reducers/gameSlice";
 
 export const GamePage = () => {
@@ -45,48 +42,48 @@ export const GamePage = () => {
     }, [turn]);
 
     useEffect(() => {
-        console.log(winner);
-        if (winner || freeCells.length > 5) return;
-
-        dispatch(checkRows());
-        dispatch(checkColumns());
-        dispatch(checkFirstDiagonal());
-        dispatch(checkSecondDiagonal());
+        dispatch(checkWinner());
     }, [turn]);
+
+    const cells = gameboard.map((gameboardRow, rowIndex) =>
+        gameboardRow.map((mark, cellIndex) => {
+            const id = `${rowIndex}-${cellIndex}`;
+            return (
+                <Cell
+                    key={id}
+                    id={id}
+                    mark={mark}
+                    myMark={myMark}
+                    turn={turn}
+                    freeCells={freeCells}
+                />
+            );
+        })
+    );
+
+    const turnMarkIcon = turn === MARK_X ? <GrayX /> : <GrayO />;
+
+    const myInfoTitle = `${myMark} (You)`;
+
+    const opponentInfoTitle = `${opponentMark} (Cpu)`;
 
     return (
         <React.Fragment>
             <Header>
                 <Logo />
-                <Turn>{turn === MARK_X ? <GrayX /> : <GrayO />} Turn</Turn>
+                <Turn>{turnMarkIcon} Turn</Turn>
                 <Button color="orange" content={<RestartIcon />} />
             </Header>
-            <GridTable>
-                {gameboard.map((gameboardRow, rowIndex) =>
-                    gameboardRow.map((mark, cellIndex) => {
-                        const id = `${rowIndex}-${cellIndex}`;
-                        return (
-                            <Cell
-                                key={id}
-                                id={id}
-                                mark={mark}
-                                myMark={myMark}
-                                turn={turn}
-                                freeCells={freeCells}
-                            />
-                        );
-                    })
-                )}
-            </GridTable>
+            <GridTable>{cells}</GridTable>
             <GridTable>
                 <GameInfo
-                    title={`${myMark} (You)`}
+                    title={myInfoTitle}
                     value={myWins}
                     color="darkOrange"
                 />
                 <GameInfo title="Ties" value={0} color="grey" />
                 <GameInfo
-                    title={`${opponentMark} (Cpu)`}
+                    title={opponentInfoTitle}
                     value={opponentWins}
                     color="darkCyan"
                 />
