@@ -16,7 +16,7 @@ export interface IGameSliceState {
     opponent: IPlayerInfo;
     gameboard: IGameBoard;
     turn: IMarks;
-    draws: number;
+    ties: number;
     isStarted: boolean;
     isEnded: boolean;
     freeCells: string[];

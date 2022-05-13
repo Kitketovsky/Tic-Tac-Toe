@@ -4,6 +4,7 @@ import { MARK_O, MARK_X } from "../../constants/marks";
 import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
 import { checkGameboardFunctions } from "../../utils";
+import { ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
 
 const initialState: IGameSliceState = {
     me: {
@@ -21,7 +22,7 @@ const initialState: IGameSliceState = {
         [null, null, null],
     ],
     turn: MARK_X,
-    draws: 0,
+    ties: 0,
     isStarted: false,
     isEnded: false,
     freeCells: ["0-0", "0-1", "0-2", "1-0", "1-1", "1-2", "2-0", "2-1", "2-2"],
@@ -52,21 +53,23 @@ export const gameSlice = createSlice({
         setCellValue(
             state,
             action: PayloadAction<{
-                mark: IMarks;
                 rowIndex: string;
                 cellIndex: string;
             }>
         ) {
-            const { mark, rowIndex, cellIndex } = action.payload;
+            const { rowIndex, cellIndex } = action.payload;
 
-            state.gameboard[Number(rowIndex)][Number(cellIndex)] = mark;
+            state.gameboard[Number(rowIndex)][Number(cellIndex)] = state.turn;
 
             state.freeCells = state.freeCells.filter(
                 (cell) => cell !== `${rowIndex}-${cellIndex}`
             );
         },
         checkWinner(state) {
-            if (state.winner || state.freeCells.length > 5) return;
+            const notEnoughTurnsToWin =
+                state.freeCells.length - 1 > TOTAL_GAMEBOARD_CELLS - ROW_LENGTH;
+
+            if (state.winner || notEnoughTurnsToWin) return;
             checkGameboardFunctions.forEach((checkFn) => {
                 const winner = checkFn(state.gameboard);
                 if (winner) state.winner = winner;

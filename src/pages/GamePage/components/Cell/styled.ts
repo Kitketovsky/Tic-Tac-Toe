@@ -16,4 +16,9 @@ export const CellButton = styled.button<ButtonProps>`
     border-radius: 15px;
     border-bottom: ${({ mark }) =>
         `${mark ? "6px" : "10px"} solid ${colors.darkTheme.shadowBlue}`};
+
+    svg {
+        width: 60%;
+        height: 60%;
+    }
 `;

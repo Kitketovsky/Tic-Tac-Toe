@@ -1,0 +1,2 @@
+export const ROW_LENGTH = 3;
+export const TOTAL_GAMEBOARD_CELLS = ROW_LENGTH * ROW_LENGTH;

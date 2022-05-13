@@ -19,7 +19,7 @@ import {
 export const GamePage = () => {
     const dispatch = useAppDispatch();
 
-    const { gameboard, turn, freeCells, winner } = useAppSelector(
+    const { gameboard, turn, freeCells, winner, ties } = useAppSelector(
         (state) => state.game
     );
 
@@ -31,12 +31,10 @@ export const GamePage = () => {
     );
 
     useEffect(() => {
-        if (!freeCells.length) return;
-
-        if (turn === opponentMark) {
+        if (turn === opponentMark && freeCells.length) {
             const { rowIndex, cellIndex } = makesRandomizeTurn(freeCells);
 
-            dispatch(setCellValue({ cellIndex, rowIndex, mark: opponentMark }));
+            dispatch(setCellValue({ cellIndex, rowIndex }));
             dispatch(changeTurn());
         }
     }, [turn]);
@@ -81,7 +79,7 @@ export const GamePage = () => {
                     value={myWins}
                     color="darkOrange"
                 />
-                <GameInfo title="Ties" value={0} color="grey" />
+                <GameInfo title="Ties" value={ties} color="grey" />
                 <GameInfo
                     title={opponentInfoTitle}
                     value={opponentWins}

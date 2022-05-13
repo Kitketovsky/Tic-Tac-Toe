@@ -21,18 +21,16 @@ export const Cell: FC<Props> = ({ id, mark, myMark, turn, freeCells }) => {
     const dispatch = useAppDispatch();
 
     const onCellClickHandler = () => {
-        if (!freeCells.includes(id)) return;
+        if (freeCells.includes(id)) {
+            dispatch(
+                setCellValue({
+                    rowIndex,
+                    cellIndex,
+                })
+            );
 
-        dispatch(
-            setCellValue({
-                rowIndex,
-                cellIndex,
-                mark: myMark,
-            })
-        );
-
-        // TODO: Merge with setting value
-        dispatch(changeTurn());
+            dispatch(changeTurn());
+        }
     };
 
     const isDisabled = turn !== myMark;
