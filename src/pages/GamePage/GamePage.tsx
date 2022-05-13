@@ -10,12 +10,19 @@ import { useAppSelector } from "../../redux/hooks/useAppSelector";
 import { MARK_X } from "../../constants/marks";
 import { makesRandomizeTurn } from "../../ai/randomizedAI";
 import { useAppDispatch } from "../../redux/hooks/useAppDispatch";
-import { changeTurn, setCellValue } from "../../redux/reducers/gameSlice";
+import {
+    changeTurn,
+    checkColumns,
+    checkFirstDiagonal,
+    checkRows,
+    checkSecondDiagonal,
+    setCellValue,
+} from "../../redux/reducers/gameSlice";
 
 export const GamePage = () => {
     const dispatch = useAppDispatch();
 
-    const { gameboard, turn, freeCells } = useAppSelector(
+    const { gameboard, turn, freeCells, winner } = useAppSelector(
         (state) => state.game
     );
 
@@ -37,6 +44,16 @@ export const GamePage = () => {
         }
     }, [turn]);
 
+    useEffect(() => {
+        console.log(winner);
+        if (winner || freeCells.length > 5) return;
+
+        dispatch(checkRows());
+        dispatch(checkColumns());
+        dispatch(checkFirstDiagonal());
+        dispatch(checkSecondDiagonal());
+    }, [turn]);
+
     return (
         <React.Fragment>
             <Header>
@@ -55,6 +72,7 @@ export const GamePage = () => {
                                 mark={mark}
                                 myMark={myMark}
                                 turn={turn}
+                                freeCells={freeCells}
                             />
                         );
                     })

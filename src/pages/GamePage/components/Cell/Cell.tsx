@@ -11,15 +11,18 @@ interface Props {
     mark: IMarks | null;
     myMark: IMarks;
     turn: IMarks;
+    freeCells: string[];
 }
 
-export const Cell: FC<Props> = ({ id, mark, myMark, turn }) => {
+export const Cell: FC<Props> = ({ id, mark, myMark, turn, freeCells }) => {
     const [rowIndex, cellIndex] = id.split("-");
     const [isHovered, setIsHovered] = useState(false);
 
     const dispatch = useAppDispatch();
 
     const onCellClickHandler = () => {
+        if (!freeCells.includes(id)) return;
+
         dispatch(
             setCellValue({
                 rowIndex,

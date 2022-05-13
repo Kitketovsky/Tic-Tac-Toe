@@ -20,6 +20,7 @@ export interface IGameSliceState {
     isStarted: boolean;
     isEnded: boolean;
     freeCells: string[];
+    winner: IMarks | null;
 }
 
 export type GameInfoColors = "darkOrange" | "darkCyan" | "grey";
