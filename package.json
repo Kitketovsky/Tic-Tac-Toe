@@ -31,12 +31,12 @@
         "eject": "react-scripts eject",
         "webpack": "webpack",
         "webpack-dev-server": "webpack-dev-server",
-        "dev": "tsc webpack.config.ts && webpack-dashboard -- webpack serve -- --env mode=development --config webpack.config.js",
+        "dev": "tsc webpack.config.ts && webpack serve -- --env mode=development --config webpack.config.js",
         "duplicate": "webpack --profile --json > stats.json && npx webpack-stats-duplicates stats.json",
         "prepare": "husky install",
         "circular": "madge --circular ./src/index.tsx",
-        "analyze": "webpacj --json | webpack-bundle-size-analyzer",
-        "unuser": "npx depcheck"
+        "analyze": "webpack --json | webpack-bundle-size-analyzer",
+        "unused": "npx depcheck"
     },
     "eslintConfig": {
         "extends": [

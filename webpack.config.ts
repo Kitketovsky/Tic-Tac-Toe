@@ -5,7 +5,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const postcssNormalize = require("postcss-normalize");
 const DashboardPlugin = require("webpack-dashboard/plugin");
-const UnusedWebpackPlugin = require("unused-webpack-plugin");
+// const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const config: webpack.Configuration = {
     mode: "development",
@@ -27,22 +27,22 @@ const config: webpack.Configuration = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
-        alias: {
-            react: path.resolve(
-                __dirname,
-                "node_modules/react/cjs/react.production.min.js"
-            ),
-        },
+        // alias: {
+        //     react: path.resolve(
+        //         __dirname,
+        //         "node_modules/react/cjs/react.production.min.js"
+        //     ),
+        // },
     },
     module: {
-        noParse: [
-            new RegExp(
-                path.resolve(
-                    __dirname,
-                    "node_modules/react/cjs/react.production.min.js"
-                )
-            ),
-        ],
+        // noParse: [
+        //     new RegExp(
+        //         path.resolve(
+        //             __dirname,
+        //             "node_modules/react/cjs/react.production.min.js"
+        //         )
+        //     ),
+        // ],
         rules: [
             { test: /\.svg$/i, use: "svg-react-loader" },
             {
@@ -72,11 +72,11 @@ const config: webpack.Configuration = {
             title: "Tic Tac Toe",
         }),
         new DashboardPlugin(),
-        new UnusedWebpackPlugin({
-            directories: [path.join(__dirname, "src")],
-            exclude: ["*.test.js"],
-            root: __dirname,
-        }),
+        // new UnusedWebpackPlugin({
+        //     directories: [path.join(__dirname, "src")],
+        //     exclude: ["*.test.js"],
+        //     root: __dirname,
+        // }),
     ],
     recordsPath: path.join(__dirname, "records.json"),
     optimization: {
