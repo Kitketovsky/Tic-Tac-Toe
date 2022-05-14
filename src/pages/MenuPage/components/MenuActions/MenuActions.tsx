@@ -30,9 +30,8 @@ export const MenuActions = () => {
                 onClick={() => startNewGameHandler(OPPONENT_CPU)}
             />
             <Button
-                color="grey"
+                color="gray"
                 content="New game (vs Player)"
-                disabled
                 onClick={() => startNewGameHandler(OPPONENT_HUMAN)}
             />
         </Wrapper>

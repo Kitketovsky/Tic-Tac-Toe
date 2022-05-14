@@ -1,5 +1,6 @@
 import { IMarks } from "./marks";
 import { IOpponentTypes } from "./opponent";
+import { DRAW } from "../constants/game";
 
 export interface IPlayerInfo {
     mark: IMarks;
@@ -20,7 +21,9 @@ export interface IGameSliceState {
     isStarted: boolean;
     isEnded: boolean;
     freeCells: string[];
-    winner: IMarks | null;
+    winner: IMarks | IDraw | null;
 }
 
-export type GameInfoColors = "darkOrange" | "darkCyan" | "grey";
+export type GameInfoColors = "darkOrange" | "darkCyan" | "darkGray";
+
+export type IDraw = typeof DRAW;

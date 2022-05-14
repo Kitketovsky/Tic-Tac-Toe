@@ -2,7 +2,7 @@ import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../UI/colors";
 
-type ButtonColorProps = "orange" | "cyan" | "grey" | "transparent";
+type ButtonColorProps = "orange" | "cyan" | "gray" | "transparent";
 
 type ColorPrefixes = "dark" | "light" | "shadow";
 
@@ -13,12 +13,12 @@ interface WrapperProps {
 
 const getColor = (
     prefix: ColorPrefixes,
-    color: Exclude<ButtonColorProps, "transparent" | "grey">
+    color: Exclude<ButtonColorProps, "transparent">
 ) => {
     const [firstLetter, ...otherLetters] = color;
     const colorName = `${prefix}${
         (firstLetter.toUpperCase() + otherLetters.join("")) as Capitalize<
-            Exclude<ButtonColorProps, "transparent" | "grey">
+            Exclude<ButtonColorProps, "transparent">
         >
     }` as const;
 
@@ -34,13 +34,12 @@ const Wrapper = styled.button<WrapperProps>`
     padding: 1rem;
     font-size: 1.25rem;
     width: 100%;
+    height: 60px;
     background-color: ${({ color }) =>
-        color === "transparent" || color === "grey"
-            ? color
-            : getColor("dark", color)};
+        color === "transparent" ? color : getColor("dark", color)};
     font-weight: bold;
     border-bottom: ${({ color }) =>
-        color === "transparent" || color === "grey"
+        color === "transparent"
             ? "none"
             : `6px solid ${getColor("shadow", color)}`};
     transition: background-color 0.2s ease-in-out;
@@ -50,8 +49,6 @@ const Wrapper = styled.button<WrapperProps>`
         background-color: ${({ color }) =>
             color === "transparent"
                 ? colors.darkTheme.markButtonHover
-                : color === "grey"
-                ? color
                 : getColor("light", color)};
     }
 `;

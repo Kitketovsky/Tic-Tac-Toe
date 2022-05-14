@@ -27,12 +27,12 @@ export const PickMarkButtons = styled.div<IPickMarkButtons>`
 
     button:nth-child(1) svg path {
         fill: ${({ mark }) =>
-            mark === MARK_X ? colors.darkTheme.black : colors.darkTheme.grey};
+            mark === MARK_X ? colors.darkTheme.black : colors.darkTheme.gray};
     }
 
     button:nth-child(2) svg path {
         fill: ${({ mark }) =>
-            mark === MARK_O ? colors.darkTheme.black : colors.darkTheme.grey};
+            mark === MARK_O ? colors.darkTheme.black : colors.darkTheme.gray};
     }
 
     &::after {
@@ -41,7 +41,7 @@ export const PickMarkButtons = styled.div<IPickMarkButtons>`
         display: block;
         pointer-events: none;
         width: calc(50% - 0.7rem);
-        background-color: ${colors.darkTheme.grey};
+        background-color: ${colors.darkTheme.gray};
         top: 0.5rem;
         left: 0.7rem;
         bottom: 0.5rem;
@@ -72,11 +72,11 @@ export const Wrapper = styled.div`
     }
 
     span:nth-child(1) {
-        color: ${colors.darkTheme.grey};
+        color: ${colors.darkTheme.gray};
     }
 
     span:nth-child(3) {
-        color: ${colors.darkTheme.grey};
+        color: ${colors.darkTheme.gray};
         font-size: 0.85rem;
         opacity: 0.5;
     }

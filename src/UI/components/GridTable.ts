@@ -2,14 +2,21 @@ import styled from "styled-components";
 
 interface GridTableProps {
     columns?: number;
+    width?: number;
+    even?: boolean;
 }
 
 export const GridTable = styled.div<GridTableProps>`
     display: grid;
     gap: 1rem;
-    grid-template-columns: ${({ columns }) =>
-        columns ? `repeat(3, ${columns}fr)` : "repeat(3, 1fr)"};
+    grid-template-columns: ${({ columns, even }) => {
+        if (even) {
+            return columns ? `repeat(${columns}, 1fr)` : "repeat(3, 1fr)";
+        } else {
+            return columns ? `repeat(${columns}, auto)` : "repeat(3, auto)";
+        }
+    }};
     grid-template-rows: auto;
-    width: 100%;
-    justify-items: center;
+    width: ${({ width }) => (width ? `${100}%` : "auto")};
+    justify-content: center;
 `;

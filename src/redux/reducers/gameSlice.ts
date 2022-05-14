@@ -4,7 +4,7 @@ import { MARK_O, MARK_X } from "../../constants/marks";
 import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
 import { checkGameboardFunctions } from "../../utils";
-import { ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
+import { DRAW, ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
 
 const initialState: IGameSliceState = {
     me: {
@@ -70,10 +70,15 @@ export const gameSlice = createSlice({
                 state.freeCells.length - 1 > TOTAL_GAMEBOARD_CELLS - ROW_LENGTH;
 
             if (state.winner || notEnoughTurnsToWin) return;
+
             checkGameboardFunctions.forEach((checkFn) => {
                 const winner = checkFn(state.gameboard);
                 if (winner) state.winner = winner;
             });
+
+            if (!state.freeCells.length && !state.winner) {
+                state.winner = DRAW;
+            }
         },
     },
 });

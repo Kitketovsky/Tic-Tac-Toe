@@ -20,7 +20,7 @@ export const Turn = styled.div`
     padding: 0 1.5rem;
     height: 3.5rem;
     text-transform: uppercase;
-    color: ${colors.darkTheme.grey};
+    color: ${colors.darkTheme.gray};
     font-weight: bold;
     letter-spacing: 1px;
     background-color: ${colors.darkTheme.darkBlue};
