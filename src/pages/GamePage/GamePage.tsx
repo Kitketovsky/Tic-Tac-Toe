@@ -15,6 +15,7 @@ import {
     setCellValue,
     checkWinner,
 } from "../../redux/reducers/gameSlice";
+import { Results } from "../../components/Results";
 
 export const GamePage = () => {
     const dispatch = useAppDispatch();
@@ -72,20 +73,29 @@ export const GamePage = () => {
                 <Turn>{turnMarkIcon} Turn</Turn>
                 <Button color="orange" content={<RestartIcon />} />
             </Header>
-            <GridTable>{cells}</GridTable>
-            <GridTable>
+            <GridTable width={100} even>
+                {cells}
+            </GridTable>
+            <GridTable width={100} even>
                 <GameInfo
                     title={myInfoTitle}
                     value={myWins}
                     color="darkOrange"
                 />
-                <GameInfo title="Ties" value={ties} color="grey" />
+                <GameInfo title="Ties" value={ties} color="darkGray" />
                 <GameInfo
                     title={opponentInfoTitle}
                     value={opponentWins}
                     color="darkCyan"
                 />
             </GridTable>
+            {winner && (
+                <Results
+                    myMark={myMark}
+                    winner={winner}
+                    opponentMark={opponentMark}
+                />
+            )}
         </React.Fragment>
     );
 };
