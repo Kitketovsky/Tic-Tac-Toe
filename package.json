@@ -21,6 +21,7 @@
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
         "typescript": "^4.4.2",
+        "unused-webpack-plugin": "^2.4.0",
         "web-vitals": "^2.1.0"
     },
     "scripts": {
@@ -30,9 +31,12 @@
         "eject": "react-scripts eject",
         "webpack": "webpack",
         "webpack-dev-server": "webpack-dev-server",
-        "dev": "tsc webpack.config.ts && webpack serve -- --env mode=development --config webpack.config.js",
+        "dev": "tsc webpack.config.ts && webpack-dashboard -- webpack serve -- --env mode=development --config webpack.config.js",
         "duplicate": "webpack --profile --json > stats.json && npx webpack-stats-duplicates stats.json",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "circular": "madge --circular ./src/index.tsx",
+        "analyze": "webpacj --json | webpack-bundle-size-analyzer",
+        "unuser": "npx depcheck"
     },
     "eslintConfig": {
         "extends": [
@@ -59,6 +63,7 @@
         "@types/styled-components": "^5.1.25",
         "babel-loader": "^8.2.5",
         "babel-plugin-styled-components": "^2.0.7",
+        "babel-plugin-transform-imports": "^2.0.0",
         "css-loader": "^6.7.1",
         "html-webpack-plugin": "^5.5.0",
         "husky": "^7.0.4",
@@ -73,6 +78,7 @@
         "svg-react-loader": "^0.4.6",
         "webpack": "^5.72.0",
         "webpack-cli": "^4.9.2",
+        "webpack-dashboard": "^3.3.7",
         "webpack-dev-server": "^4.9.0",
         "webpack-stats-duplicates": "^2.1.0"
     }

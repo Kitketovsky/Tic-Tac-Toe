@@ -1,0 +1,7 @@
+{
+    "baseDir": "./src/index.tsx",
+    "fileExtensions": ["ts", "tsx"],
+    "excludeRegExp": [],
+    "webpackConfig": "webpack.config.ts",
+    "tsConfig": "tsconfig.json"
+}
