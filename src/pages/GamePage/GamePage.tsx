@@ -33,9 +33,7 @@ export const GamePage = () => {
 
     useEffect(() => {
         if (turn === opponentMark && freeCells.length) {
-            const { rowIndex, cellIndex } = makesRandomizeTurn(freeCells);
-
-            dispatch(setCellValue({ cellIndex, rowIndex }));
+            dispatch(setCellValue({}));
             dispatch(changeTurn());
         }
     }, [turn]);

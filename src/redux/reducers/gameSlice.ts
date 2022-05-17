@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IGameSliceState } from "../../types/game";
+import { IGameBoard, IGameSliceState } from "../../types/game";
 import { MARK_O, MARK_X } from "../../constants/marks";
 import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
 import { checkGameboardFunctions } from "../../utils";
 import { DRAW, ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
+import { minimax } from "../../ai/minimax";
 
 const initialState: IGameSliceState = {
     me: {
@@ -53,16 +54,48 @@ export const gameSlice = createSlice({
         setCellValue(
             state,
             action: PayloadAction<{
-                rowIndex: string;
-                cellIndex: string;
+                rowIndex?: string;
+                cellIndex?: string;
             }>
         ) {
-            const { rowIndex, cellIndex } = action.payload;
+            let turnRowIndex: number;
+            let turnColumnIndex: number;
 
-            state.gameboard[Number(rowIndex)][Number(cellIndex)] = state.turn;
+            const { gameboard, turn, freeCells, me, opponent } = state;
+
+            if (turn === opponent.mark) {
+                // @ts-ignore
+                let copyGameboard: IGameBoard = [];
+
+                gameboard.forEach((row) => copyGameboard.push([...row]));
+
+                // @ts-ignore
+                console.log(copyGameboard);
+
+                const { indexRow, indexColumn } = minimax(
+                    copyGameboard,
+                    opponent.mark,
+                    freeCells,
+                    me.mark,
+                    opponent.mark
+                );
+
+                turnRowIndex = indexRow as number;
+                turnColumnIndex = indexColumn as number;
+
+                state.gameboard[indexRow as number][indexColumn as number] =
+                    opponent.mark;
+            } else {
+                const { rowIndex, cellIndex } = action.payload;
+
+                turnRowIndex = Number(rowIndex);
+                turnColumnIndex = Number(cellIndex);
+
+                gameboard[Number(rowIndex)][Number(cellIndex)] = state.turn;
+            }
 
             state.freeCells = state.freeCells.filter(
-                (cell) => cell !== `${rowIndex}-${cellIndex}`
+                (cell) => cell !== `${turnRowIndex}-${turnColumnIndex}`
             );
         },
         checkWinner(state) {
