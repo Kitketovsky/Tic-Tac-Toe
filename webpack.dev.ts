@@ -18,31 +18,20 @@ const config: webpack.Configuration = {
         filename: "[name].[contenthash:8].js",
         assetModuleFilename: "[name].[contenthash:8].[ext]",
         clean: true,
+        pathinfo: false,
     },
     devServer: {
         port: 9000,
         hot: true,
         open: true,
         historyApiFallback: true,
+        static: path.join(__dirname, "public"),
     },
     resolve: {
+        symlinks: false,
         extensions: [".tsx", ".ts", ".js"],
-        // alias: {
-        //     react: path.resolve(
-        //         __dirname,
-        //         "node_modules/react/cjs/react.production.min.js"
-        //     ),
-        // },
     },
     module: {
-        // noParse: [
-        //     new RegExp(
-        //         path.resolve(
-        //             __dirname,
-        //             "node_modules/react/cjs/react.production.min.js"
-        //         )
-        //     ),
-        // ],
         rules: [
             { test: /\.svg$/i, use: "svg-react-loader" },
             {
@@ -69,28 +58,15 @@ const config: webpack.Configuration = {
             template: "./public/index.html",
             filename: "index.html",
             favicon: "./public/favicon.ico",
-            title: "Tic Tac Toe",
+            manifest: "./public/manifest.json",
         }),
         new DashboardPlugin(),
-        // new UnusedWebpackPlugin({
-        //     directories: [path.join(__dirname, "src")],
-        //     exclude: ["*.test.js"],
-        //     root: __dirname,
-        // }),
     ],
     recordsPath: path.join(__dirname, "records.json"),
     optimization: {
-        moduleIds: "deterministic",
-        runtimeChunk: "single",
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all",
-                },
-            },
-        },
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
     },
     stats: {
         reasons: true,
