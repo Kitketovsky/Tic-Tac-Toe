@@ -1,20 +1,24 @@
 import { IGameBoard } from "../types/game";
 import { IMarks } from "../types/marks";
-import { checkMarkWin } from "../utils/checkMarkWin";
+import { checkWinning } from "../utils/checkWinning";
+import { MARK_O, MARK_X } from "../constants/marks";
 
 export const minimax = (
     gameboard: IGameBoard,
     player: IMarks,
-    freeCells: string[],
     playerMark: IMarks,
     opponentMark: IMarks
 ) => {
-    if (checkMarkWin(gameboard, playerMark)) {
+    // @ts-ignore
+    const availableCells = gameboard.filter(
+        (cell) => cell != MARK_O && cell != MARK_X
+    );
+
+    if (checkWinning(gameboard, playerMark)) {
         return { score: -10 };
-    } else if (checkMarkWin(gameboard, opponentMark)) {
-        console.log("AI WON");
+    } else if (checkWinning(gameboard, opponentMark)) {
         return { score: 10 };
-    } else if (freeCells.length === 0) {
+    } else if (availableCells.length === 0) {
         return { score: 0 };
     }
 
@@ -23,29 +27,21 @@ export const minimax = (
     // FIXME: ни один move не пушится в moves
     // FIXME: бесконечный вызов
 
-    for (let i = 0; i < freeCells.length; i++) {
+    for (let i = 0; i < availableCells.length; i++) {
         const move: Partial<{
             score: number;
-            indexRow: number;
-            indexColumn: number;
+            index: number;
         }> = {};
 
-        const [indexRow, indexColumn] = freeCells[i].split("-");
-
-        move.indexRow = Number(indexRow);
-        move.indexColumn = Number(indexColumn);
-
-        gameboard[Number(indexRow)][Number(indexColumn)] = player;
-
-        const availableCells = freeCells.filter(
-            (cell) => cell !== freeCells[i]
-        );
+        // @ts-ignore
+        move.index = gameboard[availableCells[i]] as number;
+        // @ts-ignore
+        gameboard[availableCells[i]] = player;
 
         if (player === opponentMark) {
             const result = minimax(
                 gameboard,
                 playerMark,
-                availableCells,
                 playerMark,
                 opponentMark
             );
@@ -54,13 +50,13 @@ export const minimax = (
             const result = minimax(
                 gameboard,
                 opponentMark,
-                availableCells,
                 playerMark,
                 opponentMark
             );
+            // @ts-ignore
             move.score = result.score;
         }
-
+        gameboard[availableCells[i] as number] = move.index;
         moves.push(move);
     }
 

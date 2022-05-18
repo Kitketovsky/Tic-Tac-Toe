@@ -8,7 +8,6 @@ import { GameInfo } from "./components/GameInfo/GameInfo";
 import { GridTable } from "../../UI/components/GridTable";
 import { useAppSelector } from "../../redux/hooks/useAppSelector";
 import { MARK_X } from "../../constants/marks";
-import { makesRandomizeTurn } from "../../ai/randomizedAI";
 import { useAppDispatch } from "../../redux/hooks/useAppDispatch";
 import {
     changeTurn,
@@ -20,7 +19,7 @@ import { Results } from "../../components/Results";
 export const GamePage = () => {
     const dispatch = useAppDispatch();
 
-    const { gameboard, turn, freeCells, winner, ties } = useAppSelector(
+    const { gameboard, turn, winner, freeCells, ties } = useAppSelector(
         (state) => state.game
     );
 
@@ -32,9 +31,9 @@ export const GamePage = () => {
     );
 
     useEffect(() => {
-        if (turn === opponentMark && freeCells.length) {
-            dispatch(setCellValue({}));
-            dispatch(changeTurn());
+        if (turn === opponentMark) {
+            dispatch(setCellValue(null));
+            if (freeCells.length) dispatch(changeTurn());
         }
     }, [turn]);
 
@@ -42,21 +41,18 @@ export const GamePage = () => {
         dispatch(checkWinner());
     }, [turn]);
 
-    const cells = gameboard.map((gameboardRow, rowIndex) =>
-        gameboardRow.map((mark, cellIndex) => {
-            const id = `${rowIndex}-${cellIndex}`;
-            return (
-                <Cell
-                    key={id}
-                    id={id}
-                    mark={mark}
-                    myMark={myMark}
-                    turn={turn}
-                    freeCells={freeCells}
-                />
-            );
-        })
-    );
+    const cells = gameboard.map((mark, arrayIndex) => {
+        return (
+            <Cell
+                key={arrayIndex}
+                id={arrayIndex}
+                mark={mark}
+                myMark={myMark}
+                turn={turn}
+                freeCells={freeCells}
+            />
+        );
+    });
 
     const turnMarkIcon = turn === MARK_X ? <GrayX /> : <GrayO />;
 

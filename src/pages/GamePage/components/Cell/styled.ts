@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { colors } from "../../../../UI/colors";
 
 interface ButtonProps {
-    mark: IMarks | null;
+    mark: IMarks | number;
 }
 
 export const CellButton = styled.button<ButtonProps>`
@@ -15,7 +15,9 @@ export const CellButton = styled.button<ButtonProps>`
     background-color: ${colors.darkTheme.darkBlue};
     border-radius: 15px;
     border-bottom: ${({ mark }) =>
-        `${mark ? "6px" : "10px"} solid ${colors.darkTheme.shadowBlue}`};
+        `${typeof mark === "string" ? "6px" : "10px"} solid ${
+            colors.darkTheme.shadowBlue
+        }`};
 
     svg {
         width: 60%;

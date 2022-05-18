@@ -3,7 +3,6 @@ import { IGameBoard, IGameSliceState } from "../../types/game";
 import { MARK_O, MARK_X } from "../../constants/marks";
 import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
-import { checkGameboardFunctions } from "../../utils";
 import { DRAW, ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
 import { minimax } from "../../ai/minimax";
 
@@ -17,16 +16,12 @@ const initialState: IGameSliceState = {
         wins: 0,
         type: null,
     },
-    gameboard: [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-    ],
+    gameboard: [0, 1, 2, 3, 4, 5, 6, 7, 8],
     turn: MARK_X,
     ties: 0,
     isStarted: false,
     isEnded: false,
-    freeCells: ["0-0", "0-1", "0-2", "1-0", "1-1", "1-2", "2-0", "2-1", "2-2"],
+    freeCells: [0, 1, 2, 3, 4, 5, 6, 7, 8],
     winner: null,
 };
 
@@ -51,63 +46,37 @@ export const gameSlice = createSlice({
         changeTurn(state) {
             state.turn = state.turn === MARK_X ? MARK_O : MARK_X;
         },
-        setCellValue(
-            state,
-            action: PayloadAction<{
-                rowIndex?: string;
-                cellIndex?: string;
-            }>
-        ) {
-            let turnRowIndex: number;
-            let turnColumnIndex: number;
-
-            const { gameboard, turn, freeCells, me, opponent } = state;
+        setCellValue(state, action: PayloadAction<number | null>) {
+            const { gameboard, turn, me, opponent } = state;
 
             if (turn === opponent.mark) {
-                // @ts-ignore
-                let copyGameboard: IGameBoard = [];
+                const copyGameboard: IGameBoard = [...gameboard];
 
-                gameboard.forEach((row) => copyGameboard.push([...row]));
-
-                // @ts-ignore
-                console.log(copyGameboard);
-
-                const { indexRow, indexColumn } = minimax(
+                const { index } = minimax(
                     copyGameboard,
                     opponent.mark,
-                    freeCells,
                     me.mark,
                     opponent.mark
                 );
 
-                turnRowIndex = indexRow as number;
-                turnColumnIndex = indexColumn as number;
+                state.gameboard[index] = opponent.mark;
 
-                state.gameboard[indexRow as number][indexColumn as number] =
-                    opponent.mark;
+                state.freeCells = state.gameboard.filter(
+                    (cell) => cell !== MARK_O && cell !== MARK_X
+                ) as number[];
             } else {
-                const { rowIndex, cellIndex } = action.payload;
+                gameboard[action.payload!] = state.turn;
 
-                turnRowIndex = Number(rowIndex);
-                turnColumnIndex = Number(cellIndex);
-
-                gameboard[Number(rowIndex)][Number(cellIndex)] = state.turn;
+                state.freeCells = state.gameboard.filter(
+                    (cell) => cell !== MARK_O && cell !== MARK_X
+                ) as number[];
             }
-
-            state.freeCells = state.freeCells.filter(
-                (cell) => cell !== `${turnRowIndex}-${turnColumnIndex}`
-            );
         },
         checkWinner(state) {
             const notEnoughTurnsToWin =
                 state.freeCells.length - 1 > TOTAL_GAMEBOARD_CELLS - ROW_LENGTH;
 
             if (state.winner || notEnoughTurnsToWin) return;
-
-            checkGameboardFunctions.forEach((checkFn) => {
-                const winner = checkFn(state.gameboard);
-                if (winner) state.winner = winner;
-            });
 
             if (!state.freeCells.length && !state.winner) {
                 state.winner = DRAW;

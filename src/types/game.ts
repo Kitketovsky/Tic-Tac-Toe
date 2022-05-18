@@ -8,9 +8,7 @@ export interface IPlayerInfo {
     type?: IOpponentTypes | null;
 }
 
-export type IGameBoard = [IGameBoardRow, IGameBoardRow, IGameBoardRow];
-
-export type IGameBoardRow = [IMarks | null, IMarks | null, IMarks | null];
+export type IGameBoard = (number | IMarks)[];
 
 export interface IGameSliceState {
     me: IPlayerInfo;
@@ -20,7 +18,7 @@ export interface IGameSliceState {
     ties: number;
     isStarted: boolean;
     isEnded: boolean;
-    freeCells: string[];
+    freeCells: number[];
     winner: IMarks | IDraw | null;
 }
 

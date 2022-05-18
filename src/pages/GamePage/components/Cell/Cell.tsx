@@ -7,28 +7,21 @@ import { changeTurn, setCellValue } from "../../../../redux/reducers/gameSlice";
 import { CellButton } from "./styled";
 
 interface Props {
-    id: string;
-    mark: IMarks | null;
+    id: number;
+    mark: IMarks | number;
     myMark: IMarks;
     turn: IMarks;
-    freeCells: string[];
+    freeCells: number[];
 }
 
 export const Cell: FC<Props> = ({ id, mark, myMark, turn, freeCells }) => {
-    const [rowIndex, cellIndex] = id.split("-");
     const [isHovered, setIsHovered] = useState(false);
 
     const dispatch = useAppDispatch();
 
     const onCellClickHandler = () => {
         if (freeCells.includes(id)) {
-            dispatch(
-                setCellValue({
-                    rowIndex,
-                    cellIndex,
-                })
-            );
-
+            dispatch(setCellValue(id));
             dispatch(changeTurn());
         }
     };
@@ -45,7 +38,7 @@ export const Cell: FC<Props> = ({ id, mark, myMark, turn, freeCells }) => {
         >
             {mark === MARK_X && <X />}
             {mark === MARK_O && <O />}
-            {!mark &&
+            {typeof mark !== "string" &&
                 isHovered &&
                 (myMark === MARK_X ? <OutlineX /> : <OutlineO />)}
         </CellButton>
