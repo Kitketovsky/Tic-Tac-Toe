@@ -13,6 +13,7 @@ import {
     changeTurn,
     setCellValue,
     checkWinner,
+    resetGame,
 } from "../../redux/reducers/gameSlice";
 import { Results } from "../../components/Results";
 
@@ -60,12 +61,20 @@ export const GamePage = () => {
 
     const opponentInfoTitle = `${opponentMark} (Cpu)`;
 
+    const restartGameWithoutQuittingHandler = () => {
+        dispatch(resetGame());
+    };
+
     return (
         <React.Fragment>
             <Header>
                 <Logo />
                 <Turn>{turnMarkIcon} Turn</Turn>
-                <Button color="orange" content={<RestartIcon />} />
+                <Button
+                    color="orange"
+                    content={<RestartIcon />}
+                    onClick={restartGameWithoutQuittingHandler}
+                />
             </Header>
             <GridTable width={100} even>
                 {cells}

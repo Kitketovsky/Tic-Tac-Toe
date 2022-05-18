@@ -1,7 +1,7 @@
 import { IGameBoard } from "../types/game";
 import { IMarks } from "../types/marks";
 
-export const checkWinning = (gameboard: IGameBoard, player: IMarks) => {
+export const checkIfMarkWon = (gameboard: IGameBoard, player: IMarks) => {
     if (
         (gameboard[0] == player &&
             gameboard[1] == player &&

@@ -9,6 +9,10 @@ import { MARK_O, MARK_X } from "../constants/marks";
 import { O, X } from "../assets/svg";
 import { IDraw } from "../types/game";
 import { DRAW } from "../constants/game";
+import { playNextRound, resetGame } from "../redux/reducers/gameSlice";
+import { useAppDispatch } from "../redux/hooks/useAppDispatch";
+import { useNavigate } from "react-router";
+import { ROUTES } from "../routes/routes";
 
 const Wrapper = styled.div`
     display: flex;
@@ -66,6 +70,9 @@ interface Props {
 }
 
 export const Results: FC<Props> = ({ winner, myMark, opponentMark }) => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const commentaryText =
         winner === myMark
             ? "You won!"
@@ -78,6 +85,15 @@ export const Results: FC<Props> = ({ winner, myMark, opponentMark }) => {
     const announcementText =
         winner === DRAW ? "It's a tie!" : "Takes the round!";
 
+    const nextRoundHandler = () => {
+        dispatch(playNextRound());
+    };
+
+    const quitGameHandler = () => {
+        dispatch(resetGame());
+        navigate(ROUTES.MAIN);
+    };
+
     return (
         <Modal open={!!winner}>
             <Wrapper>
@@ -86,8 +102,16 @@ export const Results: FC<Props> = ({ winner, myMark, opponentMark }) => {
                     {winnerMarkIcon} <span>{announcementText}</span>
                 </Announcement>
                 <GridTable columns={2}>
-                    <Button content="Quit" color="gray" />
-                    <Button content="Next round" color="orange" />
+                    <Button
+                        content="Quit"
+                        color="gray"
+                        onClick={quitGameHandler}
+                    />
+                    <Button
+                        content="Next round"
+                        color="orange"
+                        onClick={nextRoundHandler}
+                    />
                 </GridTable>
             </Wrapper>
         </Modal>

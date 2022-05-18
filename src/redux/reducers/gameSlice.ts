@@ -5,6 +5,10 @@ import { IMarks } from "../../types/marks";
 import { IOpponentTypes } from "../../types/opponent";
 import { DRAW, ROW_LENGTH, TOTAL_GAMEBOARD_CELLS } from "../../constants/game";
 import { minimax } from "../../ai/minimax";
+import { checkIfMarkWon } from "../../utils/checkIfMarkWon";
+import { getAvailableCells } from "../../utils/getAvailableCells";
+
+const initialBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 const initialState: IGameSliceState = {
     me: {
@@ -16,12 +20,12 @@ const initialState: IGameSliceState = {
         wins: 0,
         type: null,
     },
-    gameboard: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    gameboard: initialBoard,
     turn: MARK_X,
     ties: 0,
     isStarted: false,
     isEnded: false,
-    freeCells: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    freeCells: initialBoard,
     winner: null,
 };
 
@@ -46,40 +50,66 @@ export const gameSlice = createSlice({
         changeTurn(state) {
             state.turn = state.turn === MARK_X ? MARK_O : MARK_X;
         },
+        playNextRound(state) {
+            state.gameboard = initialBoard;
+            state.freeCells = initialBoard;
+            state.winner = null;
+            state.turn = MARK_X;
+        },
+        resetGame(state) {
+            state.gameboard = initialBoard;
+            state.freeCells = initialBoard;
+            state.winner = null;
+            state.opponent.wins = 0;
+            state.me.wins = 0;
+            state.ties = 0;
+            state.turn = MARK_X;
+        },
         setCellValue(state, action: PayloadAction<number | null>) {
-            const { gameboard, turn, me, opponent } = state;
+            const { gameboard, turn, me, opponent, freeCells } = state;
 
-            if (turn === opponent.mark) {
-                const copyGameboard: IGameBoard = [...gameboard];
+            if (freeCells.length) {
+                if (turn === opponent.mark) {
+                    const copyGameboard: IGameBoard = [...gameboard];
 
-                const { index } = minimax(
-                    copyGameboard,
-                    opponent.mark,
-                    me.mark,
-                    opponent.mark
-                );
+                    const { index } = minimax(
+                        copyGameboard,
+                        opponent.mark,
+                        me.mark,
+                        opponent.mark
+                    );
 
-                state.gameboard[index] = opponent.mark;
+                    gameboard[index] = opponent.mark;
+                } else {
+                    gameboard[action.payload!] = turn;
+                }
 
-                state.freeCells = state.gameboard.filter(
-                    (cell) => cell !== MARK_O && cell !== MARK_X
-                ) as number[];
-            } else {
-                gameboard[action.payload!] = state.turn;
-
-                state.freeCells = state.gameboard.filter(
-                    (cell) => cell !== MARK_O && cell !== MARK_X
+                state.freeCells = getAvailableCells(
+                    state.gameboard
                 ) as number[];
             }
         },
         checkWinner(state) {
+            const { freeCells, gameboard, me, opponent } = state;
+
             const notEnoughTurnsToWin =
-                state.freeCells.length - 1 > TOTAL_GAMEBOARD_CELLS - ROW_LENGTH;
+                freeCells.length - 1 > TOTAL_GAMEBOARD_CELLS - ROW_LENGTH;
 
             if (state.winner || notEnoughTurnsToWin) return;
 
-            if (!state.freeCells.length && !state.winner) {
+            if (checkIfMarkWon(gameboard, me.mark)) {
+                state.winner = me.mark;
+                state.me.wins++;
+            }
+
+            if (checkIfMarkWon(gameboard, opponent.mark)) {
+                state.winner = opponent.mark;
+                state.opponent.wins++;
+            }
+
+            if (!freeCells.length) {
                 state.winner = DRAW;
+                state.ties++;
             }
         },
     },
@@ -92,4 +122,6 @@ export const {
     changeTurn,
     setCellValue,
     checkWinner,
+    playNextRound,
+    resetGame,
 } = gameSlice.actions;

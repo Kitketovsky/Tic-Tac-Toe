@@ -1,7 +1,12 @@
 import { IGameBoard } from "../types/game";
 import { IMarks } from "../types/marks";
-import { checkWinning } from "../utils/checkWinning";
+import { checkIfMarkWon } from "../utils/checkIfMarkWon";
 import { MARK_O, MARK_X } from "../constants/marks";
+
+interface IMove {
+    index: number;
+    score: number;
+}
 
 export const minimax = (
     gameboard: IGameBoard,
@@ -14,9 +19,9 @@ export const minimax = (
         (cell) => cell != MARK_O && cell != MARK_X
     );
 
-    if (checkWinning(gameboard, playerMark)) {
+    if (checkIfMarkWon(gameboard, playerMark)) {
         return { score: -10 };
-    } else if (checkWinning(gameboard, opponentMark)) {
+    } else if (checkIfMarkWon(gameboard, opponentMark)) {
         return { score: 10 };
     } else if (availableCells.length === 0) {
         return { score: 0 };
@@ -24,19 +29,12 @@ export const minimax = (
 
     const moves: any = [];
 
-    // FIXME: ни один move не пушится в moves
-    // FIXME: бесконечный вызов
-
     for (let i = 0; i < availableCells.length; i++) {
-        const move: Partial<{
-            score: number;
-            index: number;
-        }> = {};
+        const move: Partial<IMove> = {};
 
-        // @ts-ignore
-        move.index = gameboard[availableCells[i]] as number;
-        // @ts-ignore
-        gameboard[availableCells[i]] = player;
+        move.index = gameboard[availableCells[i] as number] as number;
+
+        gameboard[availableCells[i] as number] = player;
 
         if (player === opponentMark) {
             const result = minimax(
@@ -45,6 +43,7 @@ export const minimax = (
                 playerMark,
                 opponentMark
             );
+
             move.score = result.score;
         } else {
             const result = minimax(
@@ -53,7 +52,7 @@ export const minimax = (
                 playerMark,
                 opponentMark
             );
-            // @ts-ignore
+
             move.score = result.score;
         }
         gameboard[availableCells[i] as number] = move.index;
@@ -66,7 +65,6 @@ export const minimax = (
         let bestScore = -Infinity;
 
         for (let i = 0; i < moves.length; i++) {
-            // @ts-ignore
             if (moves[i].score > bestScore) {
                 bestScore = moves[i].score as number;
                 bestMove = i;
@@ -76,7 +74,6 @@ export const minimax = (
         let bestScore = Infinity;
 
         for (let i = 0; i < moves.length; i++) {
-            // @ts-ignore
             if (moves[i].score < bestScore) {
                 bestScore = moves[i].score as number;
                 bestMove = i;
