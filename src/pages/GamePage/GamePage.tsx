@@ -16,6 +16,7 @@ import {
     resetGame,
 } from "../../redux/reducers/gameSlice";
 import { Results } from "../../components/Results";
+import { ContentWrapper } from "../../UI/components/ContentWrapper";
 
 export const GamePage = () => {
     const dispatch = useAppDispatch();
@@ -66,7 +67,7 @@ export const GamePage = () => {
     };
 
     return (
-        <React.Fragment>
+        <ContentWrapper>
             <Header>
                 <Logo />
                 <Turn>{turnMarkIcon} Turn</Turn>
@@ -99,6 +100,6 @@ export const GamePage = () => {
                     opponentMark={opponentMark}
                 />
             )}
-        </React.Fragment>
+        </ContentWrapper>
     );
 };

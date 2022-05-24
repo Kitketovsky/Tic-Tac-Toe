@@ -3,6 +3,7 @@ import { GlobalStyles } from "./UI/globalStyles";
 import { ContentWrapper } from "./UI/components/ContentWrapper";
 import { AppWrapper } from "./UI/components/AppWrapper";
 import { AllRoutes } from "./routes/AllRoutes";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
     return (
@@ -10,7 +11,9 @@ function App() {
             <GlobalStyles />
             <AppWrapper>
                 <ContentWrapper>
-                    <AllRoutes />
+                    <BrowserRouter>
+                        <AllRoutes />
+                    </BrowserRouter>
                 </ContentWrapper>
             </AppWrapper>
         </React.Fragment>
