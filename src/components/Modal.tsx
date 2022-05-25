@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { colors } from "../UI/colors";
+import { motion } from "framer-motion";
 
 export const Overlay = styled.div`
     position: absolute;
@@ -25,6 +26,12 @@ export const Wrapper = styled.div`
     background-color: ${colors.darkTheme.darkBlue};
 `;
 
+const pageMotion = {
+    initial: { opacity: 0, y: 0, x: "-50%" },
+    animate: { opacity: 1, y: "-50%", x: "-50%" },
+    exit: { opacity: 0, y: "-100%", x: "-50%" },
+};
+
 interface Props {
     open: boolean;
     children: React.ReactNode;
@@ -35,7 +42,15 @@ export const Modal: FC<Props> = ({ open, children }) => {
 
     return ReactDOM.createPortal(
         <Overlay>
-            <Wrapper>{children}</Wrapper>
+            <Wrapper
+                as={motion.div}
+                variants={pageMotion}
+                exit="exit"
+                animate="animate"
+                initial="initial"
+            >
+                {children}
+            </Wrapper>
         </Overlay>,
         document.getElementById("portal") as HTMLDivElement
     );

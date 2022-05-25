@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { Logo } from "../../components/Logo";
 import { GrayO, GrayX, RestartIcon } from "../../assets/svg";
 import { Button } from "../../components/Button";
-import { Header, Turn } from "./styled";
-import { Cell } from "./components/Cell/Cell";
-import { GameInfo } from "./components/GameInfo/GameInfo";
+import { Cell } from "./components/Cell";
+import { GameInfo } from "./components/GameInfo";
 import { GridTable } from "../../UI/components/GridTable";
 import { useAppSelector } from "../../redux/hooks/useAppSelector";
 import { MARK_X } from "../../constants/marks";
@@ -17,6 +16,41 @@ import {
 } from "../../redux/reducers/gameSlice";
 import { Results } from "../../components/Results";
 import { ContentWrapper } from "../../UI/components/ContentWrapper";
+import { AnimatePresence } from "framer-motion";
+
+import styled from "styled-components";
+import { colors } from "../../UI/colors";
+
+export const Header = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    button {
+        width: max-content;
+        border-radius: 10px;
+    }
+`;
+
+export const Turn = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 0 1.5rem;
+    height: 3.5rem;
+    text-transform: uppercase;
+    color: ${colors.darkTheme.gray};
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-color: ${colors.darkTheme.darkBlue};
+    border-radius: 10px;
+    border-bottom: 4px solid ${colors.darkTheme.shadowBlue};
+
+    svg {
+        width: 1.5rem;
+    }
+`;
 
 export const GamePage = () => {
     const dispatch = useAppDispatch();
@@ -93,13 +127,15 @@ export const GamePage = () => {
                     color="darkCyan"
                 />
             </GridTable>
-            {winner && (
-                <Results
-                    myMark={myMark}
-                    winner={winner}
-                    opponentMark={opponentMark}
-                />
-            )}
+            <AnimatePresence exitBeforeEnter>
+                {winner && (
+                    <Results
+                        myMark={myMark}
+                        winner={winner}
+                        opponentMark={opponentMark}
+                    />
+                )}
+            </AnimatePresence>
         </ContentWrapper>
     );
 };
